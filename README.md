@@ -3,7 +3,7 @@
 ## A Task List built on the MEAN stack.
 
 ## Technologies
-&nbsp
+&nbsp;
 - Mongo DB
 - Express
 - Angular 4
