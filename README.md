@@ -8,3 +8,6 @@
 - Express
 - Angular 4
 - Node JS
+- Mocha
+- Chai
+- Sinon
