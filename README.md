@@ -1,4 +1,4 @@
-# MEAN Task Lisk
+# MEAN Task List
 
 ## A Task List built on the MEAN stack.
 
