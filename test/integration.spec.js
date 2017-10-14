@@ -1,6 +1,7 @@
 const expect  = require('chai').expect;
 const request = require('supertest');
 
+
   beforeEach(function () {
     server = require('../factoryServer')();
   });
@@ -11,11 +12,18 @@ const request = require('supertest');
   });
 
 
+
   describe("Server", () => {
 
     it('responds with 200 for route /', (done) => {
       request(server)
         .get('/')
+        .expect(200, done);
+    });
+
+    it('responds with 200 for route /api/tasks', (done) => {
+      request(server)
+        .get('/api/tasks')
         .expect(200, done);
     });
 
