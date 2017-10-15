@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 afterEach( (done) => {
-  console.log('Server shutting down...')
+  console.log('Server shutting down.')
   server.close(done)
 });
 
@@ -46,4 +46,10 @@ describe("Tasks Page", () => {
   });
 
 
+});
+
+it('Incorrect route returns correct status code', (done) => {
+  request(server)
+    .get('/some-error-route')
+    .expect(404, done);
 });
