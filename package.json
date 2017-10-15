@@ -4,7 +4,7 @@
   "description": "Task List app built on the MEAN stack.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --reporter nyan",
     "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'"
   },
   "repository": {
