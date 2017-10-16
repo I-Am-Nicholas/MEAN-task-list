@@ -21,4 +21,14 @@ router.get('/tasks', (req, res) => {
   });
 });
 
+//READ: Get Single Tasks
+router.get('/task/:id', (req, res, next) => {
+  db.tasks.findOne({_id: (mongojs.ObjectId(req.params.id).toString()) }, (err, task) => {
+    if(err){
+      res.send(err);
+    }
+    res.json(task);
+  });
+});
+
 module.exports = router;
