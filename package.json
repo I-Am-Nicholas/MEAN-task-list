@@ -4,7 +4,7 @@
   "description": "Task List app built on the MEAN stack.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha -R nyan -w --require test/mocha.env.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
