@@ -4,8 +4,7 @@
   "description": "Task List app built on the MEAN stack.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
-    "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -33,5 +32,9 @@
     "mongojs": "^2.4.1",
     "request": "^2.83.0",
     "sinon": "^4.0.1"
+  },
+  "devDependencies": {
+    "supertest": "^3.0.0",
+    "babel-register": "^6.26.0"
   }
 }
