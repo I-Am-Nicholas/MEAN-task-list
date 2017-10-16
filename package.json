@@ -4,8 +4,7 @@
   "description": "Task List app built on the MEAN stack.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha -R nyan -w --inline-diffs",
-    "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'"
+    "test": "mocha -R nyan -w --require test/mocha.env.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +34,7 @@
     "sinon": "^4.0.1"
   },
   "devDependencies": {
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "babel-register": "^6.26.0"
   }
 }
