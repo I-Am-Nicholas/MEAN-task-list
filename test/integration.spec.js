@@ -45,11 +45,23 @@ describe("Tasks Page", () => {
       .expect(200, done);
   });
 
+  it('should not be empty', (done) => {
+    request(server)
+      .get('/api/tasks')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
+        expect(res.body).to.not.have.lengthOf(0)
+      done();
+    });
+  });
 
 });
 
-it('Incorrect route returns correct status code', (done) => {
+
+it('Invalid route returns correct status code', (done) => {
   request(server)
-    .get('/some-error-route')
+    .get('/invalid/route')
     .expect(404, done);
 });
