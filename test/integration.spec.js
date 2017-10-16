@@ -38,6 +38,8 @@ describe("Index Page", () => {
 
 describe("Tasks Page", () => {
 
+let task2 = {"_id":"59e4547d566c36829f9b22ac","Task 2":"Take Mark VII for test flight.","isDone":false}
+
   it('responds with 200 for route /api/tasks', (done) => {
     request(server)
       .get('/api/tasks')
@@ -45,11 +47,48 @@ describe("Tasks Page", () => {
       .expect(200, done);
   });
 
+  it('should not be empty', (done) => {
+    request(server)
+      .get('/api/tasks')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
+        expect(res.body).to.have.lengthOf(3)
+      done();
+    });
+  });
+
+  it('should return one specific db document of three', (done) => {
+    request(server)
+      .get('/api/tasks')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
+        expect(res.body[1].Task2).to.equal('Take Mark VII for test flight.', done)
+        expect(res.body[1].isDone).to.equal(false);
+        done();
+      });
+  });
+
+  it('should return one specific db document by id number', (done) => {
+    request(server)
+      .get('/api/task/59e4532c566c36829f9b22ab')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
+        expect(res.body.Task1).to.equal("Polish Mark VII");
+        expect(res.body.isDone).to.equal(false);
+        done();
+      });
+  });
 
 });
 
-it('Incorrect route returns correct status code', (done) => {
+it('Invalid route returns correct status code', (done) => {
   request(server)
-    .get('/some-error-route')
+    .get('/invalid/route')
     .expect(404, done);
 });

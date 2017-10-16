@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const mongojs = require('mongojs');
-const db = mongojs('mongodb://nicholas:nicholas@ds115085.mlab.com:15085/mean-task', ['tasks'])
+var db;
+var append;
+
+if (process.env.NODE_ENV == 'Test')
+  append = '-test';
+else
+  append = '';
+
+db = mongojs('mongodb://localhost/task-list'+append, ['tasks'])
 
 //READ: Get All Tasks
 router.get('/tasks', (req, res) => {
@@ -10,6 +18,16 @@ router.get('/tasks', (req, res) => {
       res.send(err);
     }
     res.json(tasks);
+  });
+});
+
+//READ: Get Single Tasks
+router.get('/task/:id', (req, res, next) => {
+  db.tasks.findOne({_id: (mongojs.ObjectId(req.params.id).toString()) }, (err, task) => {
+    if(err){
+      res.send(err);
+    }
+    res.json(task);
   });
 });
 
