@@ -66,6 +66,7 @@ let task2 = {"_id":"59e4547d566c36829f9b22ac","Task 2":"Take Mark VII for test f
       .expect(200)
       .end((err, res) => {
         if(err) throw err;
+        console.log(res.body)
         expect(res.body[1].Task2).to.equal('Take Mark VII for test flight.', done)
         expect(res.body[1].isDone).to.equal(false);
         done();
