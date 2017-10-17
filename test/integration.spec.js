@@ -87,7 +87,7 @@ let task2 = {"_id":"59e4547d566c36829f9b22ac","Task 2":"Take Mark VII for test f
 
 });
 
-it('Invalid route returns correct status code', (done) => {
+it('Invalid route returns appropriate status code', (done) => {
   request(server)
     .get('/invalid/route')
     .expect(404, done);

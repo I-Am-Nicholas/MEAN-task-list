@@ -14,20 +14,15 @@ db = mongojs('mongodb://localhost/task-list'+append, ['tasks'])
 //READ: Get All Tasks
 router.get('/tasks', (req, res) => {
   db.tasks.find((err, tasks) => {
-    if(err){
-      res.send(err);
-    }
-    res.json(tasks);
+  err ? res.send(err) : res.json(tasks);
   });
 });
 
 //READ: Get Single Tasks
 router.get('/task/:id', (req, res, next) => {
-  db.tasks.findOne({_id: (mongojs.ObjectId(req.params.id).toString()) }, (err, task) => {
-    if(err){
-      res.send(err);
-    }
-    res.json(task);
+  let getParamId = mongojs.ObjectId(req.params.id)
+  db.tasks.findOne( {_id: getParamId.toString() }, (err, task) => {
+  err ? res.send(err) : res.json(task);
   });
 });
 
