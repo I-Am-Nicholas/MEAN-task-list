@@ -1,4 +1,3 @@
 -w
 --require babel-register
 --require test/mocha.env.js
--R nyan
