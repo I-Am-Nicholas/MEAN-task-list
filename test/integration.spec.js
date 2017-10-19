@@ -2,6 +2,7 @@
 
 var chai = require('chai');
 var expect  = require('chai').expect;
+var server;
 
 const request = require('supertest');
 
