@@ -1,14 +1,10 @@
-'use strict';
-
-var chai = require('chai');
-var expect  = require('chai').expect;
-var server;
-
+const chai = require('chai');
+const expect  = require('chai').expect;
 const request = require('supertest');
 
 describe('Server', () => {
 
-  beforeEach(function () {
+  beforeEach(() => {
     delete require.cache[require.resolve('../server')];
     server = require('../server');
   });
@@ -58,31 +54,5 @@ describe('Server', () => {
       .get('/invalid/route')
       .expect(404, done);
   });
-
-});
-
-
-describe('Database', () => {
-
-  var mongoose = require('mongoose');
-  mongoose.Promise = global.Promise;
-
-  mongoose.connection.openUri('mongodb://localhost/task-list-test')
-  var db = mongoose.connection;
-
-
-  after((done) => {
-    db.once('open', () => {
-      console.log('Database Connected.')
-    });
-    db.dropDatabase(() => {
-      console.log('Database dropped.')
-    });
-    db.close(() => {
-      console.log('Connection closed.')
-      done();
-    });
-  });
-
 
 });
