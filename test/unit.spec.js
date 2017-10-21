@@ -2,33 +2,32 @@ const chai = require('chai');
 const expect  = require('chai').expect;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
+var db = require('../db');
 
-const db = require('../db.js');
-
-describe('Database', () => {
+describe('Database', function() {
 
 //ODM
-  var mongoose = require('mongoose');
+  let mongoose = require('mongoose');
   mongoose.Promise = global.Promise;
 
 
-  after((done) => {
-    db.once('open', () => {
-      console.log('Database Connected.')
+  after(function(done) {
+    db.connect().once('open', function() {
+      console.log('Database connected.')
     });
-    db.dropDatabase(() => {
-      console.log('Database dropped.')
+    db.connect().dropDatabase(function() {
+      console.log('Database dropped.\n')
     });
-    db.close(() => {
-      console.log('Connection closed.')
+    db.connect().close(function() {
+      console.log('Database disonnected.')
     });
     done();
   });
 
 
-  describe('Validations', () => {
+  describe('Validations', function() {
 
-    it('should reject names less than one character long', (done) => {
+    it('should reject names less than one character long', function(done) {
       let testTask = new Task({task: ''});
       expect(testTask.validate()).to.be.rejected;
       done();

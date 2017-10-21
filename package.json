@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/marudine/MEAN-task-list#readme",
   "dependencies": {
+    "async": "^2.5.0",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",

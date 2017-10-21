@@ -7,7 +7,7 @@ const tasks = require('./controllers/tasks');//api to connect to mongo db
 
 const app = express();
 
-const portNumber = 3000;
+const portNumber = 3200;
 
 //View engine
 app.set('views', path.join(__dirname, 'views'));//let system know which folder our views will be in
@@ -25,8 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use('/', index);
 app.use('/api', tasks);
 
-var server = app.listen(portNumber, () => {
-  var port = server.address().port;
+const server = app.listen(portNumber, () => {
+  const port = server.address().port;
   console.log('App is listening at port %s', port);
 });
 
