@@ -44,7 +44,8 @@ describe('Server', () => {
       request(server)
         .get('/api/tasks')
         .expect('Content-Type', /json/)
-        .expect(200, done);
+        .expect(200);
+        done();
     });
 
   });
@@ -52,7 +53,8 @@ describe('Server', () => {
   it('Invalid route returns appropriate status code', (done) => {
     request(server)
       .get('/invalid/route')
-      .expect(404, done);
+      .expect(404);
+      done();
   });
 
 });
