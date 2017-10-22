@@ -12,7 +12,7 @@ let state = {
 
 //DATABASE CONNECTION
 exports.connect = (done) => {
-  // if (state.db) return
+
   //SELECT ENVIRONMENT
   let append;
   process.env.NODE_ENV == 'Test' ? append = '-test' : append = '';
@@ -37,13 +37,19 @@ exports.testData = () => {
     console.log("DB NOT Connected!")
     return (new Error('Database not connected.'))
   }
+  else {
+    Task.remove({}, (err) => {
+     console.log('Collection removed. Clean slate.')
+   });
+  }
 
   var testTasks = testData.testTasks;
-  async.each(testTasks, function(task, done) {
+  testTasks.forEach( (task) => {
     let tsk = new Task({ _id: task._id, task: task.task });
-    tsk.save(function (err) {
-      if (err) return done(err)
+    tsk.save( (err) => {
+      if (err){ console.log(err.errmsg) }
+      console.log("New data saved to DB.")
     });
-  })
+  });
 
 }

@@ -7,7 +7,7 @@ const tasks = require('./controllers/tasks');//api to connect to mongo db
 
 const app = express();
 
-const portNumber = 3000;
+const portNumber = process.env.NODE_ENV == 'Test' ? 3200 : 3000
 
 //View engine
 app.set('views', path.join(__dirname, 'views'));//let system know which folder our views will be in
