@@ -3,7 +3,7 @@ const expect  = require('chai').expect;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var db = require('../db');
-
+const testData = require('./testData')
 
 //ODM
 let mongoose = require('mongoose');
@@ -15,52 +15,42 @@ var testSchema = new mongoose.Schema(schema)
 
 describe('Database', function() {
 
+  beforeEach(function(done){
+
+    mongoose.connect('mongodb://localhost/task-list-test', {
+       useMongoClient: true,
+       promiseLibrary: global.Promise
+    });
+
+    db.testData(function(){
+      console.log("Database populated.")
+    });//ESSENTIAL for initial population of DB
+
+    done()
+  });
+
   afterEach(function(done) {
-    mongoose.connection.close(function(err) {
-      if (err) return (err)
+    mongoose.connection.close(function(){
     });
     done();
   });
-
-  //MODEL
-  if (typeof Task === 'undefined') {
-    console.log('Mongoose model has not yet been created.\nAssigning to a variable now.')
-    Task = mongoose.model('Task', testSchema)
-  }
-  else {
-    console.log('Already assigned to a variable.\nSkipping re-assignment.')
-  }
 
 
   it('should reject names less than one character long', function(done) {
     let testTask = new Task({task: ''});
-    expect(testTask.validate(function(err, res){
-      if (err) return (err)
+    expect(testTask.validate(function(err, res, done){
     }).then(function(err, res){
-      if (err) return (err)
+      if (err) return done(err)
     })).to.be.rejected
     done();
   });
 
-  it('should have one document in the database', function(done){
-
-    var promise = mongoose.connect('localhost/task-list-test', function(err, done){
-      useMongoClient: true
-    }).then(function(err){
-      if (err) return (err)
-      console.log('Database connected')
-    }, done)
-
-    var huntKR = new Task({_id: 6, task: 'Hunt down KillerRabbit'});
-      huntKR.save(function(err) {
-      if (err) return (err)
+  it('should have specific document in the database', function(){
+    Task.find({_id: '59e4532c566c36829f9b22ab'},function(err, doc, done){
+      if (err) return done(err)
+      let task = testData.testTasks[0].task;
+      expect(doc[0].task).to.equal(task)
     });
-
-    Task.find({_id: 6},function(err, doc){
-      if (err) return (err)
-      expect(doc[0].task).to.equal('Hunt down KillerRabbit')
-    });
-    done()
   });
 
 });
