@@ -1,23 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-var db = require('../db.js')
-
-//SCHEMA
-  const minlength = [1, 'The value of path `{PATH}` (`{VALUE}`) is shorter than the minimum allowed length ({MINLENGTH}).'];
-  const schema = new mongoose.Schema ({
-    _id: {type: String},
-    task: { type: String, minlength: minlength },
-    isDone: { type: Boolean }
-  });
+var db = require('../db.js');
+var schema = require('../public/schemas/schema');
+var thisSchema = new mongoose.Schema(schema)
 
 //MODEL
   if (typeof Task === 'undefined') {
-    console.log('Mongoose model has not been created.\nAssigning to a variable now.')
-    Task = mongoose.model('Task', schema)
-  }
-  else {
-    console.log('Already assigned to a variable.\nSkipping re-assignment.')
+    Task = mongoose.model('Task', thisSchema)
   }
 
 //READ: Get All Tasks

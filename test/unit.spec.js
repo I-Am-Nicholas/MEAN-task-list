@@ -3,37 +3,54 @@ const expect  = require('chai').expect;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var db = require('../db');
+const testData = require('./testData')
+
+//ODM
+let mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+//Test Schema
+var schema = require('../public/schemas/schema');
+var testSchema = new mongoose.Schema(schema)
+
 
 describe('Database', function() {
 
-//ODM
-  let mongoose = require('mongoose');
-  mongoose.Promise = global.Promise;
+  beforeEach(function(done){
 
+    mongoose.connect('mongodb://localhost/task-list-test', {
+       useMongoClient: true,
+       promiseLibrary: global.Promise
+    });
 
-  after(function(done) {
-    db.connect().once('open', function() {
-      console.log('Database connected.')
-    });
-    db.connect().dropDatabase(function() {
-      console.log('Database dropped.\n')
-    });
-    db.connect().close(function() {
-      console.log('Database disonnected.')
+    db.testData(function(){
+      console.log("Database populated.")
+    });//ESSENTIAL for initial population of DB
+
+    done()
+  });
+
+  afterEach(function(done) {
+    mongoose.connection.close(function(){
     });
     done();
   });
 
 
-  describe('Validations', function() {
-
-    it('should reject names less than one character long', function(done) {
-      let testTask = new Task({task: ''});
-      expect(testTask.validate()).to.be.rejected;
-      done();
-    });
-
+  it('should reject names less than one character long', function(done) {
+    let testTask = new Task({task: ''});
+    expect(testTask.validate(function(err, res, done){
+    }).then(function(err, res){
+      if (err) return done(err)
+    })).to.be.rejected
+    done();
   });
 
+  it('should have specific document in the database', function(){
+    Task.find({_id: '59e4532c566c36829f9b22ab'},function(err, doc, done){
+      if (err) return done(err)
+      let task = testData.testTasks[0].task;
+      expect(doc[0].task).to.equal(task)
+    });
+  });
 
 });
