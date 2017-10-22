@@ -29,10 +29,9 @@ describe('Database', function() {
     done()
   });
 
-  afterEach(function(done) {
-    mongoose.connection.close(function(){
+  afterEach(function() {
+      mongoose.connection.close(function(){
     });
-    done();
   });
 
 
@@ -45,12 +44,14 @@ describe('Database', function() {
     done();
   });
 
-  it('should have specific document in the database', function(){
-    Task.find({_id: '59e4532c566c36829f9b22ab'},function(err, doc, done){
+  it('should have a specific document in the database', function(){
+    setTimeout(function(){
+      Task.find({_id: '59e4532c566c36829f9b22ab'},function(err, doc){
       if (err) return done(err)
       let task = testData.testTasks[0].task;
       expect(doc[0].task).to.equal(task)
     });
+  }, 1000);
   });
 
 });
