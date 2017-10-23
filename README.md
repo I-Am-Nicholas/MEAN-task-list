@@ -4,17 +4,17 @@
 
 ## Technologies
 
-- Mongo DB
-- Express
 - Angular 4
+- Mongo DB
 - Node JS
+- Express
+- Sinon
 - Mocha
 - Chai
-- Sinon
 
 ## Overview
 
-  A simple app to improve my Node.js skills and to introduce me to NoSQL databases.
+  An app to improve my Node.js skills and to introduce me to NoSQL databases and asynchronous operations.
 
 ## Issues
   Every article I find that seems to expertly outline what an integration test is and how one should go about performing them, is peppered in the comments with those who believe the blogger to be describing either end-to-end or unit tests.
