@@ -15,7 +15,13 @@ exports.connect = (done) => {
 
   //SELECT ENVIRONMENT
   let append;
-  process.env.NODE_ENV == 'Test' ? append = '-test' : append = '';
+  if (process.env.NODE_ENV == 'Test') {
+    append = '-test'
+    schema = testSchema
+  }
+  else {
+    append = ''
+  }
 
   let uri = 'mongodb://localhost/task-list'+append
   return mongoose.connect(uri, (err, db, done) => {
@@ -30,6 +36,13 @@ exports.getDB = () => {
  return state.db
 }
 
+//CHECK MODEL STATE
+  function model() {
+    if (typeof Task === 'undefined') {
+      Task = mongoose.model('Task', schema)
+    }
+  }
+
 //SUPPLY COLLECTION DATA FROM JSON TO DB
 exports.testData = () => {
   var db = exports.getDB;
@@ -38,6 +51,7 @@ exports.testData = () => {
     return (new Error('Database not connected.'))
   }
   else {
+    model()
     Task.remove({}, (err) => {
      console.log('Collection removed. Clean slate.')
    });
@@ -48,7 +62,7 @@ exports.testData = () => {
     let tsk = new Task({ _id: task._id, task: task.task });
     tsk.save( (err) => {
       if (err){ console.log(err.errmsg) }
-      console.log("New data saved to DB.")
+      // console.log("New data saved to DB.")
     });
   });
 

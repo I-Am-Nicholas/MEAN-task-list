@@ -1,57 +1,50 @@
 const chai = require('chai');
 const expect  = require('chai').expect;
+const assert  = require('chai').assert;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var db = require('../db');
 const testData = require('./testData')
 
+//MOCK HTTP RESPONSE
+var httpMocks = require('node-mocks-http');
+var stubResponse = httpMocks.createResponse({});
+
 //ODM
 let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-//Test Schema
+
+//TEST DATABASE SCHEMA
 var schema = require('../public/schemas/schema');
 var testSchema = new mongoose.Schema(schema)
+
+//MODEL ACCESS
+var tasker = require( '../models/tasks');
 
 
 describe('Database', function() {
 
-  beforeEach(function(done){
+  beforeEach(async function() {
 
-    mongoose.connect('mongodb://localhost/task-list-test', {
-       useMongoClient: true,
-       promiseLibrary: global.Promise
-    });
-
-    db.testData(function(){
+    await db.testData(function(){//await essential!
       console.log("Database populated.")
-    });//ESSENTIAL for initial population of DB
+    });//Essential for initial population of DB
 
-    done()
   });
 
-  afterEach(function() {
-      mongoose.connection.close(function(){
-    });
+  after(async function() {
+    await mongoose.connection.close();
   });
 
 
-  it('should reject names less than one character long', function(done) {
-    let testTask = new Task({task: ''});
-    expect(testTask.validate(function(err, res, done){
-    }).then(function(err, res){
-      if (err) return done(err)
-    })).to.be.rejected
-    done();
+  let getTasks = new tasker(null, stubResponse, function(err, tasks){
+    if(err) {console.log('Custom getTasks error msg: ', err)}
   });
 
-  it('should have a specific document in the database', function(){
-    setTimeout(function(){
-      Task.find({_id: '59e4532c566c36829f9b22ab'},function(err, doc){
-      if (err) return done(err)
-      let task = testData.testTasks[0].task;
-      expect(doc[0].task).to.equal(task)
-    });
-  }, 1000);
+
+  it('should return the correct number of documents', function() {
+    expect(getTasks.tasks).to.have.lengthOf(3)
   });
+
 
 });

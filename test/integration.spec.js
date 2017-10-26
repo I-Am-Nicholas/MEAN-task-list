@@ -20,7 +20,8 @@ describe('Server', () => {
     it('responds with 200 for route /', (done) => {
       request(server)
         .get('/')
-        .expect(200, done);
+        .expect(200);
+        done();
     });
 
     it('body content', (done) => {

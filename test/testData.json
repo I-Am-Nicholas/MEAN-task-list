@@ -1,0 +1,20 @@
+{
+  "testTasks":
+  [
+    {
+      "_id":"59e4532c566c36829f9b22ab",
+      "task":"Polish Mark VII armour.",
+      "isDone":false
+    },
+    {
+      "_id":"59e4547d566c36829f9b22ac",
+      "task":"Take Mark VII for test flight.",
+      "isDone":false
+    },
+    {
+      "_id":"59e454f4566c36829f9b22ad",
+      "task":"Complete construction of Mark VIII suit.",
+      "isDone":false
+    }
+  ]
+}
