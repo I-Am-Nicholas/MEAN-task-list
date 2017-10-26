@@ -14,6 +14,6 @@ module.exports = allTasks = function(err, res, next) {
   db.connect();
   Task.find((err, tasks) => {
     (err) ? res.send(err) : res.json(tasks)
+    this.tasks = tasks;
   });
-  if (process.env.NODE_ENV == 'Test') this.tasks = tasks;
 };
