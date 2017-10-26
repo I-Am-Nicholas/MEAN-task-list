@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const index = require('./controllers/index');//home page
-const tasks = require('./controllers/tasks');//api to connect to mongo db
+const tasks = require('./models/tasks');//api to connect to mongo db
 
 const app = express();
 
@@ -26,8 +26,9 @@ app.use('/', index);
 app.use('/api', tasks);
 
 //Server
-let server = app.listen(portNumber)
-let port = server.address().port;
-console.log('App is listening at port %s', port);
+var server = app.listen(portNumber, function () {
+  var port = server.address().port;
+  console.log('App is listening at port %s', port);
+});
 
 module.exports = server;
