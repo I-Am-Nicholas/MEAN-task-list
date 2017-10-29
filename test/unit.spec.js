@@ -21,15 +21,14 @@ var testSchema = new mongoose.Schema(schema)
 //MODEL ACCESS
 var tasker = require( '../models/tasks');
 
-
+//TESTS
 describe('Database', function() {
 
   beforeEach(async function() {
-
-    await db.testData(function(){//await essential!
-      console.log("Database populated.")
+    await db.connect();
+    await db.testData(function(err){//await essential!
     });//Essential for initial population of DB
-
+    await mongoose.connection.close();
   });
 
   after(async function() {
@@ -37,14 +36,10 @@ describe('Database', function() {
   });
 
 
-  let getTasks = new tasker(null, stubResponse, function(err, tasks){
-    if(err) {console.log('Custom getTasks error msg: ', err)}
-  });
-
+  var getTasks = tasker(null, stubResponse);
 
   it('should return the correct number of documents', function() {
-    expect(getTasks.tasks).to.have.lengthOf(3)
+    expect(getTasks.allTasks()).to.have.lengthOf(3)
   });
-
 
 });
