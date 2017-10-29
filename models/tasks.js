@@ -10,10 +10,24 @@ if (typeof Task === 'undefined') {
   Task = mongoose.model('Task', thisSchema)
 }
 
-module.exports = allTasks = function(err, res, next) {
-  db.connect();
-  Task.find((err, tasks) => {
-    (err) ? res.send(err) : res.json(tasks)
-    this.tasks = tasks;
-  });
+//EXPORT MODULE
+module.exports = taskPortal = (err, res, next) => {
+
+  alt();
+  function alt() {
+    var innerAlt = function(){
+      db.connect();
+      Task.find((err, tasks) => {
+        err ? res.send(err) : res.json(tasks)
+        this.tasks = tasks;
+      })
+      return this.tasks;
+    };
+    return innerAlt();
+  };
+
+  return {
+    allTasks: alt
+  }
+
 };
