@@ -47,18 +47,18 @@ exports.connect = (done) => {
   }
 
 //SUPPLY COLLECTION DATA FROM JSON TO DB
-exports.testData = () => {
+exports.testData = async() => {
   model()
-  Task.remove({}, (err) => {
+  await Task.remove({}, (err) => {
     if (err){ console.log("Custom Task.remove error message: "+err)}
     console.log('Collection removed. Clean slate.')
   });
 
-  let testTasks = testData.testTasks;
+  let testTasks = await testData.testTasks;
 
-  testTasks.forEach( (task) => {
+  testTasks.forEach( async(task) => {
     let tsk = new Task({ _id: task._id, task: task.task });
-    tsk.save( (err) => {
+    await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
     });
   });

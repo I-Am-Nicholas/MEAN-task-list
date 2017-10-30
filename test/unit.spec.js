@@ -28,7 +28,6 @@ describe('Database', function() {
     await db.connect();
     await db.testData(function(err){//await essential!
     });//Essential for initial population of DB
-    await mongoose.connection.close();
   });
 
   after(async function() {
