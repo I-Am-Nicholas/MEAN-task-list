@@ -29,16 +29,17 @@
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "dupertest": "^1.0.2",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "mocha": "^4.0.1",
     "mongojs": "^2.4.1",
     "mongoose": "^4.10.8",
     "mpromise": "^0.5.5",
+    "node-mocks-http": "^1.6.6",
     "request": "^2.83.0",
     "sinon": "^4.0.1",
-    "supertest": "^3.0.0",
-    "node-mocks-http": "^1.6.6"
+    "supertest": "^3.0.0"
   },
   "devDependencies": {}
 }
