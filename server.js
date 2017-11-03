@@ -1,9 +1,10 @@
 const express = require('express');
+
 const path = require('path');
 const bodyParser = require('body-parser');
-
+//FILES ROUTED TO
 const index = require('./controllers/index');//home page
-const tasks = require('./models/tasks');//api to connect to mongo db
+const routes = require('./controllers/routes');
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 //Routing
 app.use('/', index);
-app.use('/api', tasks);
+app.use('/api', routes);
 
 //Server
 var server = app.listen(portNumber, function () {

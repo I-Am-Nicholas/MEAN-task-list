@@ -1,8 +1,8 @@
 const chai = require('chai');
 const expect  = require('chai').expect;
-const assert  = require('chai').assert;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
+
 var db = require('../db');
 const testData = require('./testData')
 
@@ -13,32 +13,38 @@ var stubResponse = httpMocks.createResponse({});
 //ODM
 let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+let connection = mongoose.connection;
 
 //TEST DATABASE SCHEMA
 var schema = require('../public/schemas/schema');
 var testSchema = new mongoose.Schema(schema)
 
-//MODEL ACCESS
-var tasker = require( '../models/tasks');
+//CONTROLLER ACCESS
+var getTasks = require( '../models/tasks');
 
 //TESTS
 describe('Database', function() {
 
-  beforeEach(async function() {
-    await db.connect();
-    await db.testData(function(err){//await essential!
-    });//Essential for initial population of DB
+  beforeEach( async function() {
+    await db.testData();//await halts event loop until DB is fully populated.
   });
+
+  afterEach(function(){
+    db.wipe();
+  })
 
   after(async function() {
     await mongoose.connection.close();
+    connection.on('disconnected', function() {
+    })
+    console.log('DB Disconnected')
   });
 
 
-  var getTasks = tasker(null, stubResponse);
-
-  it('should return the correct number of documents', function() {
-    expect(getTasks.allTasks()).to.have.lengthOf(3)
+  it('should return the correct number of documents', async function() {
+    let tasks = await getTasks.allTasks(stubResponse);
+    expect(tasks).to.have.lengthOf(3)
   });
+
 
 });
