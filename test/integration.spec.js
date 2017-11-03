@@ -20,8 +20,11 @@ describe('Server', () => {
     it('responds with 200 for route /', (done) => {
       request(server)
         .get('/')
-        .expect(200);
-        done();
+        .expect(200)
+        .end((err, res) => {
+          if(err) throw err;
+          done();
+        });
     });
 
     it('body content', (done) => {
@@ -41,21 +44,26 @@ describe('Server', () => {
 
   describe('Tasks Page', () => {
 
-    it('responds with 200 for route /api/tasks', (done) => {
+    it('responds with 200 for route /api/routes', (done) => {
       request(server)
-        .get('/api/tasks')
-        .expect('Content-Type', /json/)
-        .expect(200);
+      .get('/api/tasks')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
         done();
+      });
     });
-
   });
 
   it('Invalid route returns appropriate status code', (done) => {
     request(server)
-      .get('/invalid/route')
-      .expect(404);
+    .get('/invalid/route')
+    .expect(404)
+    .end((err, res) => {
+      if(err) throw err;
       done();
+    });
   });
 
 });

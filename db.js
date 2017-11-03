@@ -7,8 +7,13 @@ const testData = require('./test/testData')
 var append;
 
 //DATABASE STATE
-let state = {
-  db: null
+let state = (active = false) => {
+  if (typeof state === 'undefined') {
+    var state = {
+      db: active
+    }
+  }
+  return state.db;
 }
 
 //SELECT ENVIRONMENT
@@ -23,38 +28,47 @@ let environmentSelector = () => {
 }
 
 //CONNECT DATABASE
-exports.connect = (done) => {
-
+exports.connect = async() => {
+  await mongoose.connection.close()
   environmentSelector();
-
   let uri = 'mongodb://localhost/task-list'+append
 
-  if( state.db === null ) {
-    return mongoose.connect(uri, (err, db, done) => {
-      if (err) {console.log("Custom Database Connection error message(/db.js): "+ err)}
-      state.db = 'db'
+  if(state() === false ) {
+    var connection = mongoose.connect(uri, (err) => {
+      if (err) {
+        console.log("Custom Database Connection error message(/db.js): "+ err)
+      }
+      else {
+      console.log('Connecting to '+uri)
+      state(true);
+      }
     })
-    done()
-  };
+  }
+  else {
+    state(true)
+  }
 
 };
 
 //CHECK MODEL STATE
-  let model = () => {
-    if ( typeof Task === undefined ) {
-      Task = mongoose.model('Task', schema)
-    }
+let model = () => {
+  if ( typeof Task === 'undefined' ) {
+    Task = mongoose.model('Task', schema)
   }
+}
+
+//REMOVE COLLECTION(S)
+exports.wipe = () => {
+  Task.remove({}, (err) => {
+  if (err){ console.log("Custom Task.remove error message: "+err)}
+  console.log('Collection removed. Clean slate.')
+  });
+};
 
 //SUPPLY COLLECTION DATA FROM JSON TO DB
 exports.testData = async() => {
   model()
-  await Task.remove({}, (err) => {
-    if (err){ console.log("Custom Task.remove error message: "+err)}
-    console.log('Collection removed. Clean slate.')
-  });
-
-  let testTasks = await testData.testTasks;
+  let testTasks = testData.testTasks;
 
   testTasks.forEach( async(task) => {
     let tsk = new Task({ _id: task._id, task: task.task });
@@ -62,5 +76,5 @@ exports.testData = async() => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
     });
   });
-  console.log("Database populated.")
+  console.log("Database populated by 'beforeEach' block.")
 };
