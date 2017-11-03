@@ -1,5 +1,6 @@
 const chai = require('chai');
 const expect  = require('chai').expect;
+const assert  = require('chai').assert;
 const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 
@@ -24,14 +25,14 @@ var testSchema = new mongoose.Schema(schema)
 var getTasks = require( '../models/tasks');
 
 //TESTS
-describe('Database', function() {
+describe('DATABASE\n', function() {
 
   beforeEach( async function() {
     await db.testData();//await halts event loop until DB is fully populated.
   });
 
-  afterEach(function(){
-    db.wipe();
+  afterEach(async function(){
+    await db.wipe();
   })
 
   after(async function() {
