@@ -29,7 +29,7 @@ app.use('/api', routes);
 //Server
 var server = app.listen(portNumber, function () {
   var port = server.address().port;
-  console.log('App is listening at port %s', port);
+  console.log('App listening at port %s', port);
 });
 
 module.exports = server;

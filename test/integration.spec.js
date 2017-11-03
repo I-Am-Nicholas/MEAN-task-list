@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect  = require('chai').expect;
 const request = require('supertest');
 
-describe('Server', () => {
+describe('SERVER\n', () => {
 
   beforeEach(() => {
     delete require.cache[require.resolve('../server')];
@@ -10,12 +10,12 @@ describe('Server', () => {
   });
 
   afterEach( (done) => {
-    console.log('Server shutting down.')
+    console.log('Server shutting down.\n')
     server.close(done)
   });
 
 
-  describe('Index Page', () => {
+  describe('INDEX PAGE\n', () => {
 
     it('responds with 200 for route /', (done) => {
       request(server)
@@ -42,9 +42,9 @@ describe('Server', () => {
   });
 
 
-  describe('Tasks Page', () => {
+  describe('TASKS PAGE\n', () => {
 
-    it('responds with 200 for route /api/routes', (done) => {
+    it('responds with 200 for route /api/tasks', (done) => {
       request(server)
       .get('/api/tasks')
       .expect('Content-Type', /json/)

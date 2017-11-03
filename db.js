@@ -38,10 +38,6 @@ exports.connect = async() => {
       if (err) {
         console.log("Custom Database Connection error message(/db.js): "+ err)
       }
-      else {
-      console.log('Connecting to '+uri)
-      state(true);
-      }
     })
   }
   else {
@@ -61,7 +57,7 @@ let model = () => {
 exports.wipe = () => {
   Task.remove({}, (err) => {
   if (err){ console.log("Custom Task.remove error message: "+err)}
-  console.log('Collection removed. Clean slate.')
+  console.log('\nCollection removed. Clean slate.')
   });
 };
 
@@ -71,7 +67,9 @@ exports.testData = async() => {
   let testTasks = testData.testTasks;
 
   testTasks.forEach( async(task) => {
-    let tsk = new Task({ _id: task._id, task: task.task });
+    let tsk = new Task({ _id: task._id, task: task.task }, function(err){
+      if (err){console.log("Custom new Task err msg in testData/testTasks")}
+    });
     await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
     });
