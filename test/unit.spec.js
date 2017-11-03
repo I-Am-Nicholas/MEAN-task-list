@@ -6,9 +6,10 @@ chai.use(chaiAsPromised);
 var db = require('../db');
 const testData = require('./testData')
 
-//MOCK HTTP RESPONSE
+//MOCK HTTP RESPONSE + REQUEST
 var httpMocks = require('node-mocks-http');
 var stubResponse = httpMocks.createResponse({});
+var mockRequest = require('dupertest');
 
 //ODM
 let mongoose = require('mongoose');
@@ -19,7 +20,7 @@ let connection = mongoose.connection;
 var schema = require('../public/schemas/schema');
 var testSchema = new mongoose.Schema(schema)
 
-//CONTROLLER ACCESS
+//MODEL ACCESS
 var getTasks = require( '../models/tasks');
 
 //TESTS
@@ -44,6 +45,17 @@ describe('Database', function() {
   it('should return the correct number of documents', async function() {
     let tasks = await getTasks.allTasks(stubResponse);
     expect(tasks).to.have.lengthOf(3)
+  });
+
+  it('should return the correct document', async function() {
+    const entity = { task: 'Take Mark VII for test flight.' };
+
+    await mockRequest(getTasks.oneTask)
+    .params({id: '59e4547d566c36829f9b22ac'})
+    .end( function(response) {
+      expect(response.task).equal(entity.task);
+    });
+
   });
 
 

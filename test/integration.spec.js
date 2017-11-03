@@ -19,12 +19,12 @@ describe('Server', () => {
 
     it('responds with 200 for route /', (done) => {
       request(server)
-        .get('/')
-        .expect(200)
-        .end((err, res) => {
-          if(err) throw err;
-          done();
-        });
+      .get('/')
+      .expect(200)
+      .end((err, res) => {
+        if(err) throw err;
+        done();
+      });
     });
 
     it('body content', (done) => {
