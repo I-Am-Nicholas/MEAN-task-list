@@ -23,7 +23,7 @@ exports.oneTask = function(req, res){
   db.connect();
   let getParamId = req.params.id
   let findTask = Task.findOne( {_id: getParamId.toString() }, (err, task) => {
-    err ? console.log('Oh no!') : res.send(task);
+    err ? console.log('Custom err msg from oneTask'+err) : res.send(task);
     return task
   });
   return findTask;
