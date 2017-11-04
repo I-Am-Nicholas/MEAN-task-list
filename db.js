@@ -65,11 +65,10 @@ exports.wipe = () => {
 exports.testData = async() => {
   model()
   let testTasks = testData.testTasks;
+  exports.wipe()
 
   testTasks.forEach( async(task) => {
-    let tsk = new Task({ _id: task._id, task: task.task }, function(err){
-      if (err){console.log("Custom new Task err msg in testData/testTasks")}
-    });
+    let tsk = new Task({ _id: task._id, task: task.task });
     await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
     });

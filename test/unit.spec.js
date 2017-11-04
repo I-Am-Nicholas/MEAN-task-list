@@ -28,12 +28,8 @@ var getTasks = require( '../models/tasks');
 describe('DATABASE\n', function() {
 
   beforeEach( async function() {
-    await db.testData();//await halts event loop until DB is fully populated.
+    await db.testData();//await halts event loop until DB is fully wiped, then populated.
   });
-
-  afterEach(async function(){
-    await db.wipe();
-  })
 
   after(async function() {
     await mongoose.connection.close();
@@ -49,14 +45,11 @@ describe('DATABASE\n', function() {
   });
 
   it('should return the correct document', async function() {
-    const entity = { task: 'Take Mark VII for test flight.' };
-
     await mockRequest(getTasks.oneTask)
     .params({id: '59e4547d566c36829f9b22ac'})
     .end( function(response) {
-      expect(response.task).equal(entity.task);
+      expect(response.task).equal('Take Mark VII for test flight.')
     });
-
   });
 
 
