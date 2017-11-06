@@ -35,16 +35,10 @@ exports.connect = async() => {
 
   if(state() === false ) {
     var connection = mongoose.connect(uri, (err) => {
-      if (err) {
-        console.log("Custom Database Connection error message(/db.js): "+ err)
-      }
+      err ? console.log("Custom DB Connection err msg(/db.js): "+ err) : state(true)
     })
   }
-  else {
-    state(true)
-  }
-
-};
+}
 
 //CHECK MODEL STATE
 let model = () => {

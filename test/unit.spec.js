@@ -25,7 +25,7 @@ var testSchema = new mongoose.Schema(schema)
 var getTasks = require( '../models/tasks');
 
 //TESTS
-describe('DATABASE\n', function() {
+describe('DATABASE\n', async function() {
 
   beforeEach( async function() {
     await db.testData();//await halts event loop until DB is fully wiped, then populated.
@@ -44,13 +44,21 @@ describe('DATABASE\n', function() {
     expect(tasks).to.have.lengthOf(3)
   });
 
-  it('should return the correct document', async function() {
-    await mockRequest(getTasks.oneTask)
+  await it('should return the correct document', function() {
+     mockRequest(getTasks.oneTask)
     .params({id: '59e4547d566c36829f9b22ac'})
-    .end( function(response) {
-      expect(response.task).equal('Take Mark VII for test flight.')
+    .end(function(response) {
+      expect(response.task).to.equal('Take Mark VII for test flight.')
     });
   });
 
+  it('should find and delete the correct document', function() {
+    mockRequest(getTasks.deleteTask)
+    .params({id: '59e4532c566c36829f9b22ab'})
+    .end(function(output) {
+      console.log(output)
+      expect(output).to.equal('Deleted. Database now contains 2 tasks.')
+    });
+  });
 
 });

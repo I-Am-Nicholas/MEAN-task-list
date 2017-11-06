@@ -13,18 +13,28 @@ if (typeof Task === 'undefined') {
 exports.allTasks = function(res) {
   db.connect();
   let findTasks = Task.find((err, tasks) => {
-    err ? res.send(err) : res.json(tasks);
+    err ? res.send(err) : res.send(tasks);
     return tasks;
   });
   return findTasks;
 };
 
-exports.oneTask = function(req, res){
-  db.connect();
+exports.oneTask = async function(req, res) {
+  await db.connect();
   let getParamId = req.params.id
-  let findTask = Task.findOne( {_id: getParamId.toString() }, (err, task) => {
+  await Task.findOne( {_id: getParamId.toString()} )
+  .exec( (err, task) => {
     err ? console.log('Custom err msg from oneTask'+err) : res.send(task);
     return task
   });
-  return findTask;
 };
+
+exports.deleteTask = async function(req, res) {
+  await db.connect();
+  let getParamId = req.params.id
+  await Task.findByIdAndRemove( getParamId.toString() )
+  let t = await Task.find((err, tasks) => {
+    err ? console.log('Custom deleteTask err msg: '+err) : tasks
+  })
+  await res.send("Deleted. Database now contains "+t.length+" tasks.")
+}
