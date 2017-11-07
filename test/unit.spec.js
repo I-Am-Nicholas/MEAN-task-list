@@ -27,8 +27,8 @@ var getTasks = require( '../models/tasks');
 //TESTS
 describe('DATABASE\n', async function() {
 
-  beforeEach( async function() {
-    await db.testData();//await halts event loop until DB is fully wiped, then populated.
+  beforeEach(async function() {
+    await db.testData();
   });
 
   after(async function() {
@@ -44,20 +44,27 @@ describe('DATABASE\n', async function() {
     expect(tasks).to.have.lengthOf(3)
   });
 
-  await it('should return the correct document', function() {
-     mockRequest(getTasks.oneTask)
+  it('should return the correct document', async function() {
+     await mockRequest(getTasks.oneTask)
     .params({id: '59e4547d566c36829f9b22ac'})
     .end(function(response) {
       expect(response.task).to.equal('Take Mark VII for test flight.')
     });
   });
 
-  it('should find and delete the correct document', function() {
-    mockRequest(getTasks.deleteTask)
+  await it('should find and delete the correct document', async function() {
+    await mockRequest(getTasks.deleteTask)
     .params({id: '59e4532c566c36829f9b22ab'})
     .end(function(output) {
-      console.log(output)
-      expect(output).to.equal('Deleted. Database now contains 2 tasks.')
+      expect(output).to.equal('Database now contains 2 tasks.')
+    });
+  });
+
+  it('should return an error message', async function() {
+    await mockRequest(getTasks.deleteTask)
+    .params({id: 'fake params'})
+    .end(function(output) {
+      expect(output).to.equal("Unable to find task: fake params")
     });
   });
 

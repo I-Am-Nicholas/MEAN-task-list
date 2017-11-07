@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise;
+
 const async = require('async')
 var schema = require('./public/schemas/schema');
 var testSchema = new mongoose.Schema(schema);
@@ -38,6 +40,7 @@ exports.connect = async() => {
       err ? console.log("Custom DB Connection err msg(/db.js): "+ err) : state(true)
     })
   }
+  else {state(true)}
 }
 
 //CHECK MODEL STATE
@@ -48,8 +51,8 @@ let model = () => {
 }
 
 //REMOVE COLLECTION(S)
-exports.wipe = () => {
-  Task.remove({}, (err) => {
+exports.wipe = async() => {
+  await Task.remove({}, (err) => {
   if (err){ console.log("Custom Task.remove error message: "+err)}
   console.log('\nCollection removed. Clean slate.')
   });
@@ -59,9 +62,9 @@ exports.wipe = () => {
 exports.testData = async() => {
   model()
   let testTasks = testData.testTasks;
-  exports.wipe()
+  await exports.wipe()
 
-  testTasks.forEach( async(task) => {
+  await testTasks.forEach( async(task) => {
     let tsk = new Task({ _id: task._id, task: task.task });
     await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
