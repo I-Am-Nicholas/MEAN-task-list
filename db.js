@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 const async = require('async')
-var schema = require('./public/schemas/schema');
-var testSchema = new mongoose.Schema(schema);
+var schema = require('./public/schemas/schema')
+var testSchema = new mongoose.Schema(schema)
 const testData = require('./test/testData')
 
-var append;
+var append
 
 //DATABASE STATE
 let state = (active = false) => {
@@ -15,7 +15,7 @@ let state = (active = false) => {
       db: active
     }
   }
-  return state.db;
+  return state.db
 }
 
 //SELECT ENVIRONMENT
@@ -32,7 +32,7 @@ let environmentSelector = () => {
 //CONNECT DATABASE
 exports.connect = async() => {
   await mongoose.connection.close()
-  environmentSelector();
+  environmentSelector()
   let uri = 'mongodb://localhost/task-list'+append
 
   if(state() === false ) {
@@ -55,20 +55,20 @@ exports.wipe = async() => {
   await Task.remove({}, (err) => {
   if (err){ console.log("Custom Task.remove error message: "+err)}
   console.log('\nCollection removed. Clean slate.')
-  });
-};
+  })
+}
 
 //SUPPLY COLLECTION DATA FROM JSON TO DB
 exports.testData = async() => {
   model()
-  let testTasks = testData.testTasks;
+  let testTasks = testData.testTasks
   await exports.wipe()
 
   await testTasks.forEach( async(task) => {
-    let tsk = new Task({ _id: task._id, task: task.task });
+    let tsk = new Task({ _id: task._id, task: task.task })
     await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
-    });
-  });
+    })
+  })
   console.log("Database populated by 'beforeEach' block.")
-};
+}
