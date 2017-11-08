@@ -52,6 +52,14 @@ describe('DATABASE\n', async function() {
     });
   });
 
+  it('should recognise and alert of an unfound ID', async function() {
+     await mockRequest(getTasks.oneTask)
+    .params({id: 'fake id'})
+    .end(function(response) {
+      expect(response).to.equal("Unable to find task: fake id")
+    });
+  });
+
   await it('should find and delete the correct document', async function() {
     await mockRequest(getTasks.deleteTask)
     .params({id: '59e4532c566c36829f9b22ab'})
