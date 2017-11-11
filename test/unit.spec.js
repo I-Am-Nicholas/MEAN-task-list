@@ -41,7 +41,7 @@ describe('DATABASE\n', async function() {
 
   it('should return the correct number of documents', async function() {
     let tasks = await getTasks.allTasks(stubResponse)
-    expect(tasks).to.have.lengthOf(3)
+    expect(tasks).to.have.lengthOf(testData.testTasks.length)
   })
 
   it('should return the correct document', async function() {
