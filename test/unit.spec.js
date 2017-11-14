@@ -44,8 +44,8 @@ describe('DATABASE\n', async function() {
     expect(tasks).to.have.lengthOf(testData.testTasks.length)
   })
 
-  it('should return the correct document', async function() {
-     await mockRequest(getTasks.oneTask)
+  it('should return the correct document', function() {
+    mockRequest(getTasks.oneTask)
     .params({id: '59e4547d566c36829f9b22ac'})
     .end(function(response) {
       expect(response.task).to.equal('Take Mark VII for test flight.')
@@ -61,19 +61,21 @@ describe('DATABASE\n', async function() {
   })
 
   await it('should find and delete the correct document', async function() {
-    await mockRequest(getTasks.deleteTask)
+    mockRequest(getTasks.deleteTask)
     .params({id: '59e4532c566c36829f9b22ab'})
     .end(function(output) {
-      expect(output).to.equal('Database now contains 2 tasks.')
+      expect(output).to.equal("2 documents remaining in database.")
     })
+    await getTasks.dbSize()//essential. Don't yet know why.
   })
 
-  it('should return an error message', async function() {
-    await mockRequest(getTasks.deleteTask)
+  await it('should return the correct message', async function() {
+    mockRequest(getTasks.deleteTask)
     .params({id: 'fake params'})
     .end(function(output) {
       expect(output).to.equal("Unable to find task: fake params")
     })
+    await getTasks.dbSize()//essential. Don't yet know why.
   })
 
 })

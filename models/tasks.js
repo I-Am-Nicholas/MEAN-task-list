@@ -34,19 +34,17 @@ exports.oneTask = async function(req, res) {
 exports.deleteTask = async function(req, res) {
   await db.connect()
   let getParamId = req.params.id
-  await Task.findOneAndRemove( {_id : getParamId}, async (err, task) => {
+  return await Task.findOneAndRemove( {_id : getParamId}, async (err, task) => {
     if(err){console.log("Custom findOneAndRemove err msg: "+err)}
-    if(task === null) {res.send("Unable to find task: "+getParamId)}
-    else {
-      await dbSize(res)
-    }
+    if(task === null) {return res.send("Unable to find task: "+getParamId)}
+    let dbs = await exports.dbSize(res)
+    res.send(await dbs.length + " documents remaining in database.")
   })
 }
 
-let dbSize = (res) => {
-  return Task.find((err, tasks) => {
-    err ? console.log('Custom deleteTask err msg: '+err) : tasks
-  }).then(async tasks => {
-    await res.send("Database now contains "+tasks.length+" tasks.")
+exports.dbSize = async function(res) {
+  let x = await Task.find((err, tasks) => {
+    if (err) {console.log("Task.find custom err msg: "+ err)}
   })
+  return x
 }
