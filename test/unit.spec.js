@@ -14,7 +14,6 @@ var mockRequest = require('dupertest')
 
 //ODM
 let mongoose = require('mongoose')
-mongoose.Promise = global.Promise
 let connection = mongoose.connection
 
 //TEST DATABASE SCHEMA
