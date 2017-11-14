@@ -38,7 +38,7 @@ exports.deleteTask = async function(req, res) {
     if(err){console.log("Custom findOneAndRemove err msg: "+err)}
     if(task === null) {return res.send("Unable to find task: "+getParamId)}
     let dbs = await exports.dbSize(res)
-    res.send(await dbs.length + " documents remaining in database.")
+    res.send(await dbs + " documents remaining in database.")
   })
 }
 
@@ -46,5 +46,5 @@ exports.dbSize = async function(res) {
   let x = await Task.find((err, tasks) => {
     if (err) {console.log("Task.find custom err msg: "+ err)}
   })
-  return x
+  return x.length
 }
