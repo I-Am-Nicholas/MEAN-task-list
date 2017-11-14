@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-mongoose.Promise = global.Promise
 
 const async = require('async')
 var schema = require('./public/schemas/schema')
@@ -26,7 +25,6 @@ exports.connect = async() => {
   let uri = 'mongodb://localhost/task-list'+append
   var connection = mongoose.connect(uri, (err) => {
     if (err) console.log("Custom DB Connection err msg(/db.js): "+ err)
-    useMongoClient: true
   })
 }
 
