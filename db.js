@@ -8,16 +8,6 @@ const testData = require('./test/testData')
 
 var append
 
-//DATABASE STATE
-let state = (active = false) => {
-  if (typeof state === 'undefined') {
-    var state = {
-      db: active
-    }
-  }
-  return state.db
-}
-
 //SELECT ENVIRONMENT
 let environmentSelector = () => {
   if (process.env.NODE_ENV == 'Test') {
@@ -34,13 +24,10 @@ exports.connect = async() => {
   await mongoose.connection.close()
   environmentSelector()
   let uri = 'mongodb://localhost/task-list'+append
-
-  if(state() === false ) {
-    var connection = mongoose.connect(uri, (err) => {
-      err ? console.log("Custom DB Connection err msg(/db.js): "+ err) : state(true)
-    })
-  }
-  else {state(true)}
+  var connection = mongoose.connect(uri, (err) => {
+    if (err) console.log("Custom DB Connection err msg(/db.js): "+ err)
+    useMongoClient: true
+  })
 }
 
 //CHECK MODEL STATE
@@ -65,7 +52,7 @@ exports.testData = async() => {
   await exports.wipe()
 
   await testTasks.forEach( async(task) => {
-    let tsk = new Task({ _id: task._id, task: task.task })
+    let tsk = new Task({ _id: task._id, task: task.task, isDone: task.isDone })
     await tsk.save( (err, res) => {
       if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
     })
