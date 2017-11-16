@@ -5,7 +5,7 @@
 ## Technologies
 
 - Angular 4
-- Mongo DB
+- Mongo DB — Mongoose
 - Node JS
 - Express
 - Sinon
