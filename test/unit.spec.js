@@ -62,10 +62,10 @@ describe('DATABASE\n', async function() {
   await it('should find and delete the correct document', async function() {
     mockRequest(getTasks.deleteTask)
     .params({id: '59e4532c566c36829f9b22ab'})
-    .end(function(output) {
-      expect(output).to.equal("2 documents remaining in database.")
+    .end(async function() {
+      let tasks = await getTasks.allTasks(stubResponse)
+      expect(tasks.length).to.equal(testData.testTasks.length -1)
     })
-    await getTasks.dbSize()//essential. Don't yet know why.
   })
 
   await it('should return the correct message', async function() {
@@ -74,7 +74,6 @@ describe('DATABASE\n', async function() {
     .end(function(output) {
       expect(output).to.equal("Unable to find task: fake params")
     })
-    await getTasks.dbSize()//essential. Don't yet know why.
   })
 
 })

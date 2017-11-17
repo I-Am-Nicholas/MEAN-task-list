@@ -15,7 +15,8 @@ if (typeof Task === 'undefined') {
 exports.allTasks = async function(res) {
   await db.connect()
   return Task.find((err, tasks) => {
-    err ? res.send(err) : res.send(tasks)
+    if (err) {console.log("Task.find custom err msg: "+ err)}
+    res.send(tasks)
   })
 }
 
@@ -26,7 +27,7 @@ exports.oneTask = async function(req, res) {
     if (err) {console.log('Error in findOne: '+ err)}
     if(task == null) {await res.send("Unable to find task: "+getParamId)}
     else {
-      await res.send(task)
+      res.send(task)
     }
   })
 }
@@ -37,14 +38,6 @@ exports.deleteTask = async function(req, res) {
   return await Task.findOneAndRemove( {_id : getParamId}, async (err, task) => {
     if(err){console.log("Custom findOneAndRemove err msg: "+err)}
     if(task === null) {return res.send("Unable to find task: "+getParamId)}
-    let dbs = await exports.dbSize(res)
-    res.send(await dbs + " documents remaining in database.")
+    res.send("DELETED: "+ task)
   })
-}
-
-exports.dbSize = async function(res) {
-  let x = await Task.find((err, tasks) => {
-    if (err) {console.log("Task.find custom err msg: "+ err)}
-  })
-  return x.length
 }
