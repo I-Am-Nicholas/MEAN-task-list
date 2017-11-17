@@ -26,6 +26,8 @@ var getTasks = require( '../models/tasks')
 //TESTS
 describe('DATABASE\n', async function() {
 
+  let dbRefillLength = testData.testTasks.length
+
   beforeEach(async function() {
     await db.testData()
   })
@@ -40,7 +42,7 @@ describe('DATABASE\n', async function() {
 
   it('should return the correct number of documents', async function() {
     let tasks = await getTasks.allTasks(stubResponse)
-    expect(tasks).to.have.lengthOf(testData.testTasks.length)
+    expect(tasks).to.have.lengthOf(dbRefillLength)
   })
 
   it('should return the correct document', function() {
@@ -64,7 +66,7 @@ describe('DATABASE\n', async function() {
     .params({id: '59e4532c566c36829f9b22ab'})
     .end(async function() {
       let tasks = await getTasks.allTasks(stubResponse)
-      expect(tasks.length).to.equal(testData.testTasks.length -1)
+      expect(tasks.length).to.equal(dbRefillLength - 1)
     })
   })
 
@@ -73,6 +75,16 @@ describe('DATABASE\n', async function() {
     .params({id: 'fake params'})
     .end(function(output) {
       expect(output).to.equal("Unable to find task: fake params")
+    })
+  })
+
+  it('should save a new document to the database', async function() {
+    await db.testData()
+    mockRequest(getTasks.saveTask)
+    .params({id: '1234', task: "This is a new document."})
+    .end(async function(output) {
+      let tasks = await getTasks.allTasks(stubResponse)
+      expect(tasks.length).to.equal(dbRefillLength +1)
     })
   })
 
