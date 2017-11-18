@@ -88,4 +88,12 @@ describe('DATABASE\n', async function() {
     })
   })
 
+  it('should recognise an attempt to save a document without an id', async function() {
+    mockRequest(getTasks.saveTask)
+    .params({task: "This is a new document."})
+    .end(async function(output) {
+      expect(output).to.equal('Custom saveTask err msg: Error: document must have an _id before saving')
+    })
+  })
+
 })
