@@ -1,4 +1,4 @@
-const express = require('express') 
+const express = require('express')
 const router = express.Router()
 var tasks = require('../models/tasks')
 
@@ -16,8 +16,12 @@ router.get('/task/:id', (req, res, next) => {
 
 //DELETE ONE
 router.delete('/task/:id', (req, res, next) => {
-  tasks.updateTask(req, res)
+  tasks.deleteTask(req, res)
 })
 
+//ADD/SAVE ONE
+router.put('/task/:id', (req, res, next) => {
+  tasks.saveTask(req, res)
+})
 
 module.exports = router
