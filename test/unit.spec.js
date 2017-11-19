@@ -88,11 +88,19 @@ describe('DATABASE\n', async function() {
     })
   })
 
-  it('should recognise an attempt to save a document without an id', async function() {
+  it('should recognise an attempt to save a document without an id', function() {
     mockRequest(getTasks.saveTask)
-    .params({task: "This is a new document."})
-    .end(async function(output) {
+    .params({task: "This is a document without an id."})
+    .end(function(output) {
       expect(output).to.equal('Custom saveTask err msg: Error: document must have an _id before saving')
+    })
+  })
+
+  it('should find and update a document', async function() {
+    await mockRequest(getTasks.updateTask)
+    .params({id: '59e4547d566c36829f9b22ac', task: 'Start sketches for Mark IX armour.'})
+    .end(async function(output) {
+      expect(output).to.equal("SAVED: { _id: \'59e4547d566c36829f9b22ac\',\n  task: \'Start sketches for Mark IX armour.\',\n  isDone: false,\n  __v: 0 }")
     })
   })
 

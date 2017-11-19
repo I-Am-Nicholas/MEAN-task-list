@@ -4,12 +4,12 @@ var tasks = require('../models/tasks')
 
 //Router CRUD
 
-//ALL
+//GET ALL
 router.get('/tasks', (req, res, next) => {
   tasks.allTasks(res)
 })
 
-//ONE
+//GET ONE
 router.get('/task/:id', (req, res, next) => {
   tasks.oneTask(req, res)
 })
