@@ -48,15 +48,19 @@ exports.testData = async() => {
   model()
   let testTasks = testData.testTasks
   await exports.wipe()
-
-  await testTasks.forEach( async(task) => {
-    let tsk = new Task({ _id: task._id, task: task.task, isDone: task.isDone })
-    exports.saver(tsk)
-  })
+  newModel(testTasks)
   console.log("Database populated by 'beforeEach' block.")
 }
 
-//SAVE DATA TO DB
+//CREATE NEW MODEL
+let newModel = async(testTasks) => {
+  await testTasks.forEach( (task) => {
+    let tsk = new Task({ _id: task._id, task: task.task, isDone: task.isDone })
+    exports.saver(tsk)
+  })
+}
+
+//SAVE NEW MODEL TO DB
 exports.saver = (tsk) => {
   tsk.save( (err, res) => {
     if (err){ return console.log("Custom testData/tsk.save message: "+err.errmsg) }
