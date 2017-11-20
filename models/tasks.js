@@ -46,10 +46,7 @@ exports.saveTask = async function(req, res) {
   await db.connect()
   let getParams = req.params
   let tsk = new Task({_id: getParams.id, task: getParams.task})
-  await tsk.save( (err, task) => {
-    if(err){return res.send("Custom saveTask err msg: "+err)}
-    res.send("SAVED: "+task)
-  }).catch(() => {})
+  res.send("SAVED: "+ await db.saver(tsk))
 }
 
 exports.updateTask = async function(req, res) {

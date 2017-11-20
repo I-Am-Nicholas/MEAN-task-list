@@ -24,4 +24,9 @@ router.put('/task/:id', (req, res, next) => {
   tasks.saveTask(req, res)
 })
 
+//UPDATE ONE
+router.put('/task/:id/', (req, res, next) => {
+  tasks.updateTask(req, res)
+})
+
 module.exports = router

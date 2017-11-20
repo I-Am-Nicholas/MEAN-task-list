@@ -1,10 +1,8 @@
 const mongoose = require('mongoose')
-
 const async = require('async')
 var schema = require('./public/schemas/schema')
 var testSchema = new mongoose.Schema(schema)
 const testData = require('./test/testData')
-
 var append
 
 //SELECT ENVIRONMENT
@@ -61,8 +59,14 @@ let newModel = async(testTasks) => {
 }
 
 //SAVE NEW MODEL TO DB
-exports.saver = (tsk) => {
-  tsk.save( (err, res) => {
-    if (err){ return console.log("Custom testData/tsk.save message: "+err.errmsg) }
+exports.saver = async (tsk) => {
+  await tsk.save( (err, task) => {
+    if(err){ res.send(saveErrorMsg(err)) }
+    return task
   })
+}
+
+//SAVE FUNCTION ERR MESSAGE
+let saveErrorMsg = async (err) => {
+  return console.log("Custom testData/tsk.save message: "+err.errmsg)
 }
