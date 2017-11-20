@@ -56,8 +56,9 @@ exports.testData = async() => {
   console.log("Database populated by 'beforeEach' block.")
 }
 
-exports.saver = async(tsk) => {
-  await tsk.save( (err, res) => {
+//SAVE DATA TO DB
+exports.saver = (tsk) => {
+  tsk.save( (err, res) => {
     if (err){ return console.log("Custom testData/tsk.save message: "+err.errmsg) }
   })
 }
