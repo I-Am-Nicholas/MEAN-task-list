@@ -51,9 +51,13 @@ exports.testData = async() => {
 
   await testTasks.forEach( async(task) => {
     let tsk = new Task({ _id: task._id, task: task.task, isDone: task.isDone })
-    await tsk.save( (err, res) => {
-      if (err){ console.log("Custom testData/tsk.save message: "+err.errmsg) }
-    })
+    exports.saver(tsk)
   })
   console.log("Database populated by 'beforeEach' block.")
+}
+
+exports.saver = async(tsk) => {
+  await tsk.save( (err, res) => {
+    if (err){ return console.log("Custom testData/tsk.save message: "+err.errmsg) }
+  })
 }
