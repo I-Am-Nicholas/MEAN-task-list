@@ -60,13 +60,7 @@ let newModel = async(testTasks) => {
 
 //SAVE NEW MODEL TO DB
 exports.saver = async (tsk) => {
-  await tsk.save( (err, task) => {
-    if(err){ return(saveErrorMsg(err)) }
+  await tsk.save( (task) => {
     return task
   })
-}
-
-//SAVE FUNCTION ERR MESSAGE
-let saveErrorMsg = async (err) => {
-  return console.log("Custom testData/tsk.save message: "+err.errmsg)
 }
