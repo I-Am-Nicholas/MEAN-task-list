@@ -68,5 +68,5 @@ exports.saver = async (tsk) => {
 
 //SAVE FUNCTION ERR MESSAGE
 let saveErrorMsg = async (err) => {
-  return console.log("Custom testData/tsk.save message: "+err.errmsg)
+  console.log("Custom testData/tsk.save message: "+err)
 }
