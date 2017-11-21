@@ -89,8 +89,8 @@ describe('DATABASE\n', async function() {
   })
 
   it('should recognise an attempt to save a document without an id', async function() {
-    let y = { params: { task: 'This is a document without an id.' } }
-    await getTasks.saveTask( y, stubResponse ).catch((err) => {
+    let param = { params: { task: 'This is a document without an id.' } }
+    await getTasks.saveTask( param, stubResponse ).catch((err) => {
       expect(err.toString()).to.equal('Error: document must have an _id before saving')
     })
   })
