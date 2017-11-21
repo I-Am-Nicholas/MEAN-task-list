@@ -54,18 +54,12 @@ exports.updateTask = async function(req, res) {
   await Task.findOne( {_id: getParams.id}, async (err, task) => {
     if (err) {console.log('Error in findOne: '+ err)}
     if(task == null) {await res.send("Unable to find task with id: "+getParams.id)}
-
-  await assignTaskProperties(getParams, task)
-
-    await task.save((err, task) => {
-      if(err){return res.send("Custom saveTask err msg: "+err)}
-      res.send("SAVED: "+task)
-    }).catch(() => {})
+    let updatedTask = await assignTaskProperties(getParams, task)
+    res.send("SAVED: "+ await db.saver(updatedTask))
   })
 }
 
 let assignTaskProperties = (getParams, task) => {
-  task.id = getParams.id || task.id
   task.task = getParams.task || task.task
   task.isFalse = getParams.isFalse || task.isFalse
   return task
