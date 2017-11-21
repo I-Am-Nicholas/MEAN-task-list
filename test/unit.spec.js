@@ -98,7 +98,7 @@ describe('DATABASE\n', async function() {
   it('should find and update a document', async function() {
     await mockRequest(getTasks.updateTask)
     .params({id: '59e4547d566c36829f9b22ac', task: 'Start sketches for Mark IX armour.'})
-    .end(async function(output) {
+    .end(function(output) {
       expect(output).to.equal("SAVED: { _id: \'59e4547d566c36829f9b22ac\',\n  task: \'Start sketches for Mark IX armour.\',\n  isDone: false,\n  __v: 0 }")
     })
   })
