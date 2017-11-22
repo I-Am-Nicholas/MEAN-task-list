@@ -44,27 +44,18 @@ exports.deleteTask = async function(req, res) {
 
 exports.saveTask = async function(req, res) {
   await db.connect()
-  let getParams = req.params
-  let tsk = new Task({_id: getParams.id, task: getParams.task})
+  let tsk = new Task({_id: req.params.id, task: req.params.task})
   res.send("SAVED: "+ await db.saver(tsk))
 }
 
 exports.updateTask = async function(req, res) {
-  let getParams = req.params
-  await Task.findOne( {_id: getParams.id}, async (err, task) => {
-    if (err) {console.log('Error in findOne: '+ err)}
-    if(task == null) {await res.send(badIDMessage(getParams.id))}
-    let updatedTask = await assignTaskProperties(getParams, task)
-    res.send("SAVED: "+ await db.saver(updatedTask))
+  await db.connect()
+  await Task.update(req.params, function(err, result) {
+    if(err){res.send(err)}
+    res.send(result)
   })
 }
 
  let badIDMessage = function(id) {
   return "Unable to find task with id: " + id
-}
-
-let assignTaskProperties = (getParams, task) => {
-  task.task = getParams.task || task.task
-  task.isFalse = getParams.isFalse || task.isFalse
-  return task
 }

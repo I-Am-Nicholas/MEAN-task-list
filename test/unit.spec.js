@@ -83,8 +83,7 @@ describe('DATABASE\n', async function() {
     mockRequest(getTasks.saveTask)
     .params({id: '1234', task: "This is a new document."})
     .end(async function(output) {
-      let tasks = await getTasks.allTasks(stubResponse)
-      expect(tasks.length).to.equal(dbRefillLength +1)
+      expect(output).to.equal("SAVED: { __v: 0, _id: '1234', task: 'This is a new document.' }")
     })
   })
 
@@ -96,11 +95,13 @@ describe('DATABASE\n', async function() {
   })
 
   it('should find and update a document', async function() {
+    await db.testData()
     await mockRequest(getTasks.updateTask)
-    .params({id: '59e4547d566c36829f9b22ac', task: 'Start sketches for Mark IX armour.'})
+    .params({id: '59e4547d566c36829f9b22ac', task: 'Start sketches for Mark IX armour.', isDone: 'false'})
     .end(function(output) {
-      expect(output).to.equal("SAVED: { _id: \'59e4547d566c36829f9b22ac\',\n  task: \'Start sketches for Mark IX armour.\',\n  isDone: false,\n  __v: 0 }")
+      expect(output.nModified > 0).to.be.true
     })
   })
+
 
 })
