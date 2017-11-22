@@ -59,8 +59,8 @@ let newModel = async(testTasks) => {
 }
 
 //SAVE NEW MODEL TO DB
-exports.saver = async (tsk) => {
-  return await tsk.save( (err, task) => {
+exports.saver = (tsk) => {
+  return tsk.save( (err, task) => {
     if(err){console.log(err)}
   })
 }
