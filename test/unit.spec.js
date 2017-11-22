@@ -57,7 +57,7 @@ describe('DATABASE\n', async function() {
      await mockRequest(getTasks.oneTask)
     .params({id: 'fake id'})
     .end(function(response) {
-      expect(response).to.equal("Unable to find task: fake id")
+      expect(response).to.equal("Unable to find task with id: fake id")
     })
   })
 
@@ -74,7 +74,7 @@ describe('DATABASE\n', async function() {
     mockRequest(getTasks.deleteTask)
     .params({id: 'fake params'})
     .end(function(output) {
-      expect(output).to.equal("Unable to find task: fake params")
+      expect(output).to.equal("Unable to find task with id: fake params")
     })
   })
 
