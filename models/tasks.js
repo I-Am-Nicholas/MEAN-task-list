@@ -25,7 +25,7 @@ exports.oneTask = async function(req, res) {
   let getParamId = req.params.id
   await Task.findOne( {_id: getParamId}, async (err, task) => {
     if (err) {console.log('Error in findOne: '+ err)}
-    if(task == null) {await res.send("Unable to find task: "+getParamId)}
+    if(task == null) {await res.send(badIDMessage(getParamId))}
     else {
       res.send(task)
     }
@@ -37,7 +37,7 @@ exports.deleteTask = async function(req, res) {
   let getParams = req.params
   return await Task.findOneAndRemove( {_id : getParams.id}, async (err, task) => {
     if(err){console.log("Custom findOneAndRemove err msg: "+err)}
-    if(task === null) {return res.send("Unable to find task: "+getParams.id)}
+    if(task === null) {return res.send(badIDMessage(getParams.id))}
     res.send("DELETED: "+ task)
   })
 }
