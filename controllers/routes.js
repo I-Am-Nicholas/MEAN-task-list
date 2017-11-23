@@ -20,7 +20,7 @@ router.delete('/task/:id', (req, res, next) => {
 })
 
 //ADD/SAVE ONE
-router.put('/task/:id', (req, res, next) => {
+router.post('/task/:id', (req, res, next) => {
   tasks.saveTask(req, res)
 })
 
