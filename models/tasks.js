@@ -44,7 +44,7 @@ exports.deleteTask = async function(req, res) {
 
 exports.saveTask = async function(req, res) {
   await db.connect()
-  let tsk = new Task({_id: req.params.id, task: req.params.task})
+  let tsk = new Task({_id: req.params.id, task: req.body.task})
   res.send("SAVED: "+ await db.saver(tsk))
 }
 
@@ -56,6 +56,6 @@ exports.updateTask = async function(req, res) {
   })
 }
 
- let badIDMessage = function(id) {
+let badIDMessage = function(id) {
   return "Unable to find task with id: " + id
 }

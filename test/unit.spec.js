@@ -81,14 +81,16 @@ describe('DATABASE\n', async function() {
   it('should save a new document to the database', async function() {
     await db.testData()
     mockRequest(getTasks.saveTask)
-    .params({id: '1234', task: "This is a new document."})
+    .params({id: '1234'})
+    .body({task: 'This is a new document.'})
     .end(async function(output) {
       expect(output).to.equal("SAVED: { __v: 0, _id: '1234', task: 'This is a new document.' }")
     })
   })
 
   it('should recognise an attempt to save a document without an id', async function() {
-    let param = { params: { task: 'This is a document without an id.' } }
+    let param = { body: { task: 'This is a document without an id.' },
+                  params: {} }
     await getTasks.saveTask( param, stubResponse ).catch((err) => {
       expect(err.toString()).to.equal('Error: document must have an _id before saving')
     })
