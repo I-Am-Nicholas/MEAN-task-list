@@ -34,12 +34,14 @@
     "express": "^4.16.2",
     "mocha": "^4.0.1",
     "mongojs": "^2.4.1",
-    "mongoose": "^4.10.8",
+    "mongoose": "4.10.8",
     "mpromise": "^0.5.5",
     "node-mocks-http": "^1.6.6",
     "request": "^2.83.0",
     "sinon": "^4.0.1",
     "supertest": "^3.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@angular/cli": "^1.5.4"
+  }
 }
