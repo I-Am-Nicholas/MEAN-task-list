@@ -1,4 +1,4 @@
-const express = require('express') 
+const express = require('express')
 
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -16,7 +16,11 @@ app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile)
 
 //Static folder for Angular
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'client/task-list/dist')))
+
+app.get('*'), (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/task-list/dist/index.html'))
+}
 
 //Parser MiddleWare
 app.use(bodyParser.json())
