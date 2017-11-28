@@ -7,10 +7,10 @@ export class GetDataService {
 
   result;
 
-  constructor(private http: Http) { }
+  constructor(private _http: Http) {}
 
   getTasks() {
-    return this.http.get('api/tasks')
+    return this._http.get('api/tasks')
     .map(result => this.result = result.json());
   }
 
