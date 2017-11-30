@@ -1,14 +1,12 @@
-import { AppPage } from './app.po';
 
 describe('task-list App', () => {
-  let page: AppPage;
 
   beforeEach(() => {
-    page = new AppPage();
+    browser.get("http://localhost:3000/");
   });
 
   it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(browser.getTitle()).toEqual('TaskList');
   });
+  
 });
