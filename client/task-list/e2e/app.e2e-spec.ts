@@ -8,9 +8,9 @@ describe('Task-List App', () => {
 
   describe('Home Page',() => {
 
-    it('should display the app\'s title', () => {
+    it('Pre-interaction elements', () => {
       expect(browser.getTitle()).toEqual('Task List');
-      expect(taskList.isPresent()).toBe(true);
+      expect(taskList.getText()).toBe("Polish Mark VII armour.\nTake Mark VII for test flight.\nDefeat super-villains");
     });
 
   })
